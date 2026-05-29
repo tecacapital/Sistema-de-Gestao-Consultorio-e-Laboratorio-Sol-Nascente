@@ -1,0 +1,1267 @@
+/**
+ * ============================================================
+ * MOBILE.CSS - VERSÃO MOBILE APP (250px - 768px)
+ * Sistema de Gestão Clínica Sol Nascente
+ * Versão: 1.0.0 - Mobile-First Application
+ * ============================================================
+ * 
+ * Estratégia:
+ * - Layout single-column até 374px
+ * - 2 colunas para cards a partir de 375px
+ * - Sidebar vira drawer overlay
+ * - Bottom nav fixa com 5 botões
+ * - Tabelas responsivas com scroll horizontal
+ * - Modais full-screen
+ * - Touch targets mínimos de 44px
+ */
+
+/* ============================================================
+ * 1. RESET & CONFIGURAÇÕES BASE MOBILE
+ * ============================================================ */
+
+@media screen and (max-width: 768px) {
+    
+    /* --- Variáveis de ajuste mobile --- */
+    :root {
+        --mobile-header-height: 52px;
+        --mobile-bottom-nav-height: 60px;
+        --mobile-safe-area-bottom: env(safe-area-inset-bottom, 8px);
+        --mobile-font-scale: 0.9;
+    }
+
+    /* --- Suavizar scroll --- */
+    html {
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        overflow-x: hidden;
+    }
+
+    body {
+        overflow-x: hidden;
+        overscroll-behavior-y: contain;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-user-select: none;
+        user-select: none;
+        /* Permitir seleção em inputs */
+    }
+    body input, body textarea, body select {
+        -webkit-user-select: text;
+        user-select: text;
+    }
+
+    /* ============================================================
+     * 2. LOADING SCREEN (AJUSTE)
+     * ============================================================ */
+    .loading-screen {
+        padding: var(--espaco-4);
+    }
+    .loading-content {
+        width: 100%;
+        max-width: 300px;
+    }
+    .loading-logo {
+        font-size: 1.2rem;
+        flex-wrap: wrap;
+        text-align: center;
+    }
+    .loading-logo i {
+        font-size: 1.5rem;
+    }
+    .loading-spinner {
+        width: 44px;
+        height: 44px;
+    }
+    .loading-progress {
+        width: 160px;
+    }
+    .loading-text {
+        font-size: 0.8rem;
+    }
+
+    /* ============================================================
+     * 3. CONTAINERS PRINCIPAIS
+     * ============================================================ */
+    #appContainer {
+        flex-direction: column;
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding-bottom: var(--mobile-bottom-nav-height);
+        padding-bottom: calc(var(--mobile-bottom-nav-height) + var(--mobile-safe-area-bottom));
+    }
+
+    /* ============================================================
+     * 4. HEADER PRINCIPAL (MOBILE)
+     * ============================================================ */
+    #header-principal,
+    .mobile-header {
+        position: sticky;
+        top: 0;
+        z-index: var(--z-fixed);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: var(--mobile-header-height);
+        padding: 0 var(--espaco-3);
+        background: linear-gradient(135deg, var(--cor-primaria), var(--cor-primaria-dark));
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        gap: var(--espaco-2);
+    }
+
+    .header-esquerda {
+        display: flex;
+        align-items: center;
+        gap: var(--espaco-2);
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+    }
+    .header-nome-sistema {
+        color: #FFFFFF;
+        font-family: var(--fonte-titulo);
+        font-size: clamp(0.8rem, 2.5vw, 1rem);
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    #logo-header-img {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+        border-radius: 6px;
+        flex-shrink: 0;
+    }
+
+    /* Avatar no header */
+    .header-direita {
+        position: relative;
+        flex-shrink: 0;
+    }
+    .avatar-circulo {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--cor-dourado);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: 2px solid rgba(255,255,255,0.5);
+        transition: transform 0.15s ease;
+        min-width: 36px;
+        min-height: 36px;
+    }
+    .avatar-circulo:active {
+        transform: scale(0.92);
+    }
+    .avatar-circulo span {
+        color: var(--cor-texto);
+        font-weight: 700;
+        font-size: 0.7rem;
+        line-height: 1;
+    }
+
+    /* Dropdown avatar */
+    .dropdown-avatar {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        background: #FFFFFF;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        width: 220px;
+        padding: var(--espaco-4);
+        z-index: var(--z-dropdown);
+        animation: dropdownSlideIn 0.2s ease;
+        border: 1px solid var(--cor-borda);
+    }
+    @keyframes dropdownSlideIn {
+        from { opacity: 0; transform: translateY(-8px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .dropdown-avatar.oculto { display: none; }
+    .dropdown-info {
+        margin-bottom: var(--espaco-3);
+        padding-bottom: var(--espaco-3);
+        border-bottom: 1px solid var(--cor-borda);
+    }
+    .dropdown-nome-func {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--cor-texto);
+    }
+    .dropdown-funcao-func {
+        font-size: 0.7rem;
+        color: var(--cor-texto-muted);
+        margin-top: 2px;
+    }
+    .btn-logout-dropdown {
+        width: 100%;
+        padding: var(--espaco-2) var(--espaco-3);
+        background: rgba(192,57,43,0.08);
+        border: 1px solid rgba(192,57,43,0.2);
+        border-radius: 10px;
+        color: var(--cor-erro);
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--espaco-2);
+        transition: background 0.15s ease;
+        min-height: 40px;
+    }
+    .btn-logout-dropdown:active {
+        background: rgba(192,57,43,0.2);
+    }
+
+    /* ============================================================
+     * 5. SIDEBAR → DRAWER OVERLAY (MOBILE)
+     * ============================================================ */
+    .sidebar-desktop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 280px;
+        max-width: 85vw;
+        background: linear-gradient(180deg, var(--cor-primaria), var(--cor-primaria-dark));
+        z-index: calc(var(--z-modal) + 10);
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-y: auto;
+        box-shadow: 4px 0 24px rgba(0,0,0,0.3);
+        display: flex;
+        flex-direction: column;
+    }
+    .sidebar-desktop.aberto,
+    body.sidebar-open .sidebar-desktop {
+        transform: translateX(0);
+    }
+
+    /* Overlay escuro atrás da sidebar */
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: calc(var(--z-modal) + 5);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    body.sidebar-open .sidebar-overlay {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Itens do drawer */
+    .sidebar-lista {
+        padding: var(--espaco-3) 0;
+        flex: 1;
+    }
+    .sidebar-item {
+        display: flex;
+        align-items: center;
+        gap: var(--espaco-3);
+        padding: var(--espaco-3) var(--espaco-5);
+        color: rgba(255,255,255,0.85);
+        font-size: 0.9rem;
+        font-weight: 500;
+        border-left: 3px solid transparent;
+        transition: all 0.15s ease;
+        cursor: pointer;
+        min-height: 48px;
+        text-decoration: none;
+    }
+    .sidebar-item i {
+        width: 24px;
+        font-size: 1.1rem;
+        text-align: center;
+        flex-shrink: 0;
+    }
+    .sidebar-item:active,
+    .sidebar-item.ativo {
+        background: rgba(255,255,255,0.12);
+        border-left-color: var(--cor-dourado);
+        color: #FFFFFF;
+    }
+    .badge-pendentes {
+        margin-left: auto;
+        background: var(--cor-dourado);
+        color: var(--cor-texto);
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 20px;
+        min-width: 22px;
+        text-align: center;
+    }
+    .badge-pendentes.oculto { display: none; }
+
+    /* Header do drawer */
+    .sidebar-header {
+        padding: var(--espaco-4) var(--espaco-5);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .sidebar-header .logo {
+        display: flex;
+        align-items: center;
+        gap: var(--espaco-2);
+        color: #FFF;
+        font-family: var(--fonte-titulo);
+        font-size: 1rem;
+        font-weight: 700;
+    }
+    .sidebar-header .logo i {
+        color: var(--cor-dourado);
+        font-size: 1.2rem;
+    }
+    .sidebar-close-btn {
+        background: none;
+        border: none;
+        color: rgba(255,255,255,0.7);
+        font-size: 1.3rem;
+        cursor: pointer;
+        padding: var(--espaco-2);
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Footer do drawer */
+    .sidebar-footer {
+        padding: var(--espaco-4) var(--espaco-5);
+        border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .btn-logout {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--espaco-2);
+        padding: var(--espaco-3);
+        background: rgba(192,57,43,0.2);
+        border: 1px solid rgba(192,57,43,0.3);
+        border-radius: 12px;
+        color: #FFF;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        min-height: 44px;
+    }
+    .btn-logout:active {
+        background: rgba(192,57,43,0.4);
+    }
+
+    /* ============================================================
+     * 6. BOTTOM NAVIGATION BAR
+     * ============================================================ */
+    .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: var(--z-fixed);
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        height: var(--mobile-bottom-nav-height);
+        padding-bottom: var(--mobile-safe-area-bottom);
+        background: #FFFFFF;
+        border-top: 1px solid var(--cor-borda);
+        box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+        gap: 2px;
+    }
+    .bottom-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        flex: 1;
+        min-width: 44px;
+        min-height: 44px;
+        padding: var(--espaco-1) var(--espaco-2);
+        background: none;
+        border: none;
+        color: var(--cor-texto-muted);
+        font-size: 0.6rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: color 0.15s ease;
+        border-radius: 8px;
+        font-family: var(--fonte-principal);
+    }
+    .bottom-nav-item i {
+        font-size: 1.2rem;
+        transition: transform 0.15s ease;
+    }
+    .bottom-nav-item:active {
+        color: var(--cor-primaria);
+    }
+    .bottom-nav-item:active i {
+        transform: scale(1.1);
+    }
+    .bottom-nav-item.ativo,
+    .bottom-nav-item.active {
+        color: var(--cor-primaria);
+        font-weight: 600;
+    }
+    .bottom-nav-item.ativo::before,
+    .bottom-nav-item.active::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 3px;
+        background: var(--cor-primaria);
+        border-radius: 0 0 3px 3px;
+    }
+    /* Badge no bottom nav */
+    .bottom-nav-item .badge-pendentes {
+        position: absolute;
+        top: 2px;
+        right: calc(50% - 18px);
+        background: var(--cor-erro);
+        color: #FFF;
+        font-size: 0.55rem;
+        min-width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 3px;
+    }
+
+    /* ============================================================
+     * 7. PAINEL "MAIS" (SHEET INFERIOR)
+     * ============================================================ */
+    .painel-mais-mobile {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: calc(var(--z-modal) + 5);
+        background: #FFFFFF;
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -4px 24px rgba(0,0,0,0.2);
+        transform: translateY(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        max-height: 50vh;
+        overflow-y: auto;
+        padding-bottom: var(--mobile-bottom-nav-height);
+        padding-bottom: calc(var(--mobile-bottom-nav-height) + var(--mobile-safe-area-bottom));
+    }
+    .painel-mais-mobile:not(.oculto) {
+        transform: translateY(0);
+    }
+    .painel-mais-mobile.oculto {
+        display: block !important;
+        transform: translateY(100%);
+        pointer-events: none;
+    }
+    .painel-mais-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--espaco-4) var(--espaco-5);
+        border-bottom: 1px solid var(--cor-borda);
+        position: sticky;
+        top: 0;
+        background: #FFFFFF;
+        border-radius: 20px 20px 0 0;
+        z-index: 2;
+    }
+    .painel-mais-header span {
+        font-weight: 600;
+        font-size: 1rem;
+        color: var(--cor-texto);
+    }
+    .btn-fechar-painel {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--cor-primaria-very-light);
+        border: none;
+        color: var(--cor-texto-muted);
+        font-size: 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        min-height: 44px;
+    }
+    .painel-mais-lista {
+        padding: var(--espaco-2) 0;
+    }
+    .painel-mais-item {
+        display: flex;
+        align-items: center;
+        gap: var(--espaco-3);
+        width: 100%;
+        padding: var(--espaco-4) var(--espaco-5);
+        background: none;
+        border: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--cor-texto);
+        cursor: pointer;
+        min-height: 52px;
+        transition: background 0.15s ease;
+        text-align: left;
+        font-family: var(--fonte-principal);
+    }
+    .painel-mais-item i {
+        width: 28px;
+        font-size: 1.1rem;
+        color: var(--cor-primaria);
+        text-align: center;
+    }
+    .painel-mais-item:active {
+        background: var(--cor-primaria-very-light);
+    }
+
+    /* Overlay para painel mais */
+    .painel-mais-mobile::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.4);
+        z-index: -1;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .painel-mais-mobile:not(.oculto)::before {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* ============================================================
+     * 8. ÁREA DE CONTEÚDO PRINCIPAL
+     * ============================================================ */
+    .area-conteudo {
+        flex: 1;
+        padding: var(--espaco-3);
+        padding-top: var(--espaco-4);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        min-height: calc(100vh - var(--mobile-header-height) - var(--mobile-bottom-nav-height));
+    }
+    .painel-layout {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    /* ============================================================
+     * 9. FILTERS BAR (MOBILE)
+     * ============================================================ */
+    .filters-bar {
+        padding: var(--espaco-3);
+        background: #FFFFFF;
+        border-radius: 12px;
+        margin-bottom: var(--espaco-3);
+        box-shadow: var(--sombra-card);
+        position: sticky;
+        top: var(--mobile-header-height);
+        z-index: var(--z-sticky);
+    }
+    .filters-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--espaco-2);
+    }
+    .filters-header h3 {
+        font-size: 0.85rem;
+        font-family: var(--fonte-principal);
+    }
+    .filters-body {
+        display: flex;
+        flex-direction: column;
+        gap: var(--espaco-2);
+    }
+    .filter-group {
+        width: 100%;
+    }
+    .filter-group label {
+        font-size: 0.7rem;
+        margin-bottom: 2px;
+    }
+    .filter-select,
+    .filter-input {
+        width: 100%;
+        padding: var(--espaco-2) var(--espaco-3);
+        font-size: 0.8rem;
+        border: 1px solid var(--cor-borda);
+        border-radius: 8px;
+        font-family: var(--fonte-principal);
+        background: #FFF;
+        min-height: 40px;
+    }
+    .btn-apply-filters,
+    .btn-clear-filters {
+        width: 100%;
+        padding: var(--espaco-2) var(--espaco-4);
+        font-size: 0.8rem;
+        min-height: 40px;
+        border-radius: 8px;
+        justify-content: center;
+    }
+    .btn-apply-filters {
+        background: var(--cor-primaria);
+        color: #FFF;
+        border: none;
+        margin-top: var(--espaco-2);
+    }
+    .btn-clear-filters {
+        background: none;
+        border: 1px solid var(--cor-borda);
+        color: var(--cor-texto-muted);
+        margin-top: 0;
+    }
+
+    /* ============================================================
+     * 10. SKELETON LOADER (MOBILE)
+     * ============================================================ */
+    .skeleton-metrics {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--espaco-3);
+    }
+    .skeleton-card {
+        height: 90px;
+        border-radius: 12px;
+    }
+    .skeleton-header {
+        height: 40px;
+    }
+    .skeleton-row {
+        height: 38px;
+    }
+
+    /* ============================================================
+     * 11. CARDS E MÉTRICAS (MOBILE)
+     * ============================================================ */
+    .card {
+        border-radius: 14px;
+        margin-bottom: var(--espaco-3);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .card:hover {
+        transform: none;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .card-header {
+        padding: var(--espaco-3) var(--espaco-4);
+    }
+    .card-header h3 {
+        font-size: 0.9rem;
+    }
+    .card-body {
+        padding: var(--espaco-3) var(--espaco-4);
+    }
+    .card-footer {
+        padding: var(--espaco-2) var(--espaco-4);
+    }
+
+    /* Metric Cards Grid */
+    .grid,
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--espaco-3);
+    }
+    .metric-card {
+        padding: var(--espaco-4);
+        border-radius: 14px;
+    }
+    .metric-card:hover {
+        transform: none;
+        box-shadow: var(--sombra-card);
+    }
+    .metric-card::before {
+        width: 3px;
+    }
+    .metric-icon {
+        width: 38px;
+        height: 38px;
+        margin-bottom: var(--espaco-3);
+    }
+    .metric-icon i {
+        font-size: 1.2rem;
+    }
+    .metric-value {
+        font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+        word-break: break-word;
+    }
+    .metric-label {
+        font-size: 0.7rem;
+    }
+
+    /* ============================================================
+     * 12. TABELAS RESPONSIVAS (MOBILE)
+     * ============================================================ */
+    .table-container {
+        border-radius: 10px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border: 1px solid var(--cor-borda);
+        /* Indicador visual de scroll */
+        background: 
+            linear-gradient(to right, #fff 30%, transparent),
+            linear-gradient(to right, transparent, #fff 70%) 100% 0,
+            radial-gradient(farthest-side at 0 50%, rgba(0,0,0,0.08), transparent),
+            radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,0.08), transparent) 100% 0;
+        background-repeat: no-repeat;
+        background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+        background-attachment: local, local, scroll, scroll;
+    }
+    table {
+        min-width: 600px;
+        font-size: 0.7rem;
+    }
+    th {
+        padding: var(--espaco-2) var(--espaco-3);
+        font-size: 0.65rem;
+        white-space: nowrap;
+    }
+    td {
+        padding: var(--espaco-2) var(--espaco-3);
+        white-space: nowrap;
+        font-size: 0.7rem;
+    }
+    tbody tr:active {
+        background: var(--cor-primaria-very-light);
+    }
+
+    /* ============================================================
+     * 13. BADGES (MOBILE)
+     * ============================================================ */
+    .badge {
+        padding: 2px 8px;
+        font-size: 0.6rem;
+        border-radius: 14px;
+    }
+
+    /* ============================================================
+     * 14. BOTÕES (MOBILE)
+     * ============================================================ */
+    .btn-primary,
+    .btn-secondary,
+    .btn-outline,
+    .btn-danger {
+        min-height: 40px;
+        padding: var(--espaco-2) var(--espaco-4);
+        font-size: 0.8rem;
+        border-radius: 10px;
+    }
+    .btn-sm {
+        min-height: 32px;
+        padding: var(--espaco-1) var(--espaco-3);
+        font-size: 0.7rem;
+        border-radius: 8px;
+    }
+    .btn-icon {
+        min-width: 36px;
+        min-height: 36px;
+        padding: var(--espaco-1);
+        border-radius: 8px;
+    }
+    /* Remover hover effects no touch */
+    .btn-primary:hover:not(:disabled),
+    .btn-secondary:hover:not(:disabled),
+    .btn-outline:hover:not(:disabled),
+    .btn-danger:hover:not(:disabled) {
+        transform: none;
+        box-shadow: none;
+    }
+    .btn-primary:active:not(:disabled) {
+        background: var(--cor-primaria-dark);
+        transform: scale(0.97);
+    }
+    .btn-secondary:active:not(:disabled) {
+        background: var(--cor-dourado-dark);
+        color: #FFF;
+        transform: scale(0.97);
+    }
+    .btn-outline:active:not(:disabled) {
+        background: var(--cor-primaria-light);
+        transform: scale(0.97);
+    }
+    .btn-danger:active:not(:disabled) {
+        background: #A93226;
+        transform: scale(0.97);
+    }
+
+    /* ============================================================
+     * 15. FORMULÁRIOS (MOBILE)
+     * ============================================================ */
+    .form-group {
+        margin-bottom: var(--espaco-4);
+        width: 100%;
+    }
+    .form-group label {
+        font-size: 0.8rem;
+        margin-bottom: var(--espaco-1);
+    }
+    .form-control {
+        width: 100%;
+        padding: var(--espaco-3);
+        font-size: 16px; /* Previne zoom no iOS */
+        border-radius: 10px;
+        min-height: 44px;
+        font-family: var(--fonte-principal);
+    }
+    .form-control:focus {
+        box-shadow: 0 0 0 2px rgba(26,122,74,0.15);
+    }
+    .form-row {
+        display: flex;
+        flex-direction: column;
+        gap: var(--espaco-3);
+    }
+    .input-group {
+        flex-wrap: wrap;
+    }
+
+    /* ============================================================
+     * 16. MODAIS (MOBILE)
+     * ============================================================ */
+    .modal-container {
+        align-items: flex-end; /* Sheet inferior no mobile */
+        padding: 0;
+    }
+    .modal {
+        width: 100%;
+        max-width: 100%;
+        max-height: 90vh;
+        border-radius: 20px 20px 0 0;
+        animation: modalSlideUp 0.3s ease;
+    }
+    @keyframes modalSlideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+    }
+    @keyframes modalFadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .modal-header {
+        padding: var(--espaco-4);
+        border-radius: 20px 20px 0 0;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
+    .modal-header h3 {
+        font-size: 0.95rem;
+    }
+    .modal-close {
+        min-width: 40px;
+        min-height: 40px;
+        font-size: 1.3rem;
+    }
+    .modal-body {
+        padding: var(--espaco-4);
+        max-height: calc(90vh - 120px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .modal-footer {
+        padding: var(--espaco-3) var(--espaco-4);
+        display: flex;
+        flex-direction: column;
+        gap: var(--espaco-2);
+        position: sticky;
+        bottom: 0;
+        background: #FFF;
+        border-radius: 0 0 20px 20px;
+    }
+    .modal-footer .btn-primary,
+    .modal-footer .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Modal de confirmação */
+    .modal-confirmacao-card {
+        width: 90%;
+        max-width: 340px;
+        border-radius: 20px;
+    }
+    .modal-confirmacao-header {
+        padding: var(--espaco-4);
+    }
+    .modal-confirmacao-card p {
+        padding: var(--espaco-3) var(--espaco-4);
+        font-size: 0.85rem;
+    }
+    .modal-confirmacao-acoes {
+        flex-direction: column;
+        gap: var(--espaco-2);
+        padding: var(--espaco-3) var(--espaco-4);
+    }
+    .modal-confirmacao-acoes button {
+        width: 100%;
+    }
+
+    /* ============================================================
+     * 17. TOASTS (MOBILE)
+     * ============================================================ */
+    .toast-container {
+        position: fixed;
+        top: calc(var(--mobile-header-height) + var(--espaco-2));
+        left: var(--espaco-2);
+        right: var(--espaco-2);
+        z-index: var(--z-toast);
+        display: flex;
+        flex-direction: column;
+        gap: var(--espaco-2);
+    }
+    .toast {
+        min-width: auto;
+        max-width: 100%;
+        width: 100%;
+        padding: var(--espaco-3) var(--espaco-4);
+        border-radius: 12px;
+        font-size: 0.8rem;
+        animation: toastSlideDown 0.3s ease;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    @keyframes toastSlideDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .toast i {
+        font-size: 1.1rem;
+        flex-shrink: 0;
+    }
+    .toast-title {
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+    .toast-message {
+        font-size: 0.75rem;
+    }
+    .toast-close {
+        min-width: 32px;
+        min-height: 32px;
+        font-size: 1.1rem;
+    }
+
+    /* ============================================================
+     * 18. LOADER OVERLAY (MOBILE)
+     * ============================================================ */
+    .loader-overlay {
+        background: rgba(255,255,255,0.92);
+        backdrop-filter: blur(3px);
+        z-index: var(--z-modal);
+    }
+    .loader-spinner {
+        width: 40px;
+        height: 40px;
+    }
+    .loader-message {
+        font-size: 0.8rem;
+    }
+
+    /* ============================================================
+     * 19. TABS (ESTOQUE)
+     * ============================================================ */
+    .tabs {
+        display: flex;
+        gap: 4px;
+        border-bottom: 2px solid var(--cor-borda);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 0;
+    }
+    .tab-btn {
+        padding: var(--espaco-2) var(--espaco-4);
+        font-size: 0.75rem;
+        font-weight: 500;
+        border: none;
+        background: none;
+        color: var(--cor-texto-muted);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+        white-space: nowrap;
+        min-height: 40px;
+        transition: all 0.15s ease;
+        font-family: var(--fonte-principal);
+    }
+    .tab-btn.active {
+        color: var(--cor-primaria);
+        border-bottom-color: var(--cor-primaria);
+        font-weight: 600;
+    }
+    .tab-btn:active {
+        color: var(--cor-primaria);
+    }
+    .tab-content {
+        padding-top: var(--espaco-3);
+    }
+
+    /* ============================================================
+     * 20. UTILITÁRIOS (MOBILE)
+     * ============================================================ */
+    .oculto { display: none !important; }
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .text-left { text-align: left; }
+    .text-success { color: var(--cor-primaria); }
+    .text-danger { color: var(--cor-erro); }
+    .text-warning { color: var(--cor-aviso); }
+    .mt-1 { margin-top: var(--espaco-1); }
+    .mt-2 { margin-top: var(--espaco-2); }
+    .mt-3 { margin-top: var(--espaco-3); }
+    .mt-4 { margin-top: var(--espaco-4); }
+    .mt-5 { margin-top: var(--espaco-5); }
+    .mt-6 { margin-top: var(--espaco-6); }
+    .mb-1 { margin-bottom: var(--espaco-1); }
+    .mb-2 { margin-bottom: var(--espaco-2); }
+    .mb-3 { margin-bottom: var(--espaco-3); }
+    .mb-4 { margin-bottom: var(--espaco-4); }
+    .mb-5 { margin-bottom: var(--espaco-5); }
+    .mb-6 { margin-bottom: var(--espaco-6); }
+    .p-1 { padding: var(--espaco-1); }
+    .p-2 { padding: var(--espaco-2); }
+    .p-3 { padding: var(--espaco-3); }
+    .p-4 { padding: var(--espaco-4); }
+    .p-5 { padding: var(--espaco-5); }
+    .p-6 { padding: var(--espaco-6); }
+
+    /* ============================================================
+     * 21. ERROR/EMPTY STATES
+     * ============================================================ */
+    .error-page {
+        padding: var(--espaco-8) var(--espaco-4);
+    }
+    .error-page i {
+        font-size: 40px;
+        margin-bottom: var(--espaco-3);
+    }
+    .error-page h3 {
+        font-size: 1rem;
+    }
+    .error-page p {
+        font-size: 0.8rem;
+    }
+    .empty-state {
+        padding: var(--espaco-8) var(--espaco-4);
+    }
+    .empty-state i {
+        font-size: 32px;
+    }
+
+    /* ============================================================
+     * 22. SCROLLBAR (ESCONDER NO MOBILE)
+     * ============================================================ */
+    ::-webkit-scrollbar {
+        width: 3px;
+        height: 3px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: var(--cor-borda);
+        border-radius: 4px;
+    }
+}
+
+/* ============================================================
+ * 23. BREAKPOINT 375px - 480px (MOBILE LARGO)
+ * ============================================================ */
+@media screen and (min-width: 375px) and (max-width: 768px) {
+    /* Grid de 2 colunas para métricas */
+    .grid-4,
+    .grid-3,
+    .grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .skeleton-metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Form row lado a lado quando faz sentido */
+    .form-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .form-row .form-group {
+        flex: 1;
+        min-width: 140px;
+    }
+    
+    /* Modal footer em linha */
+    .modal-footer {
+        flex-direction: row;
+    }
+    .modal-footer .btn-primary,
+    .modal-footer .btn-secondary {
+        width: auto;
+        flex: 1;
+    }
+    
+    /* Confirmação ações em linha */
+    .modal-confirmacao-acoes {
+        flex-direction: row;
+    }
+    .modal-confirmacao-acoes button {
+        flex: 1;
+    }
+    
+    /* Filtros em linha */
+    .filters-body {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .filter-group {
+        flex: 1;
+        min-width: 120px;
+    }
+    .btn-apply-filters {
+        width: auto;
+    }
+}
+
+/* ============================================================
+ * 24. BREAKPOINT 250px - 374px (MOBILE PEQUENO)
+ * ============================================================ */
+@media screen and (max-width: 374px) {
+    /* Ajustes para telas muito pequenas */
+    :root {
+        --mobile-header-height: 44px;
+        --mobile-bottom-nav-height: 52px;
+    }
+    
+    .bottom-nav-item {
+        font-size: 0.5rem;
+        padding: 2px;
+        gap: 1px;
+    }
+    .bottom-nav-item i {
+        font-size: 1rem;
+    }
+    
+    .metric-value {
+        font-size: 1rem;
+    }
+    .metric-label {
+        font-size: 0.6rem;
+    }
+    
+    .card-header h3 {
+        font-size: 0.8rem;
+    }
+    
+    .btn-primary,
+    .btn-secondary,
+    .btn-outline,
+    .btn-danger {
+        font-size: 0.7rem;
+        padding: var(--espaco-1) var(--espaco-3);
+        min-height: 36px;
+    }
+    
+    .form-control {
+        font-size: 14px;
+        min-height: 38px;
+    }
+    
+    .modal {
+        border-radius: 16px 16px 0 0;
+    }
+    .modal-header h3 {
+        font-size: 0.85rem;
+    }
+    
+    /* Esconder labels da bottom nav e mostrar só ícones */
+    .bottom-nav-item span {
+        font-size: 0.45rem;
+    }
+}
+
+/* ============================================================
+ * 25. SUPORTE A DISPOSITIVOS COM NOTCH / SAFE AREA
+ * ============================================================ */
+@supports (padding: env(safe-area-inset-bottom)) {
+    @media screen and (max-width: 768px) {
+        .bottom-nav {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        .painel-mais-mobile {
+            padding-bottom: calc(var(--mobile-bottom-nav-height) + env(safe-area-inset-bottom));
+        }
+        .area-conteudo {
+            padding-bottom: calc(var(--espaco-3) + env(safe-area-inset-bottom));
+        }
+    }
+}
+
+/* ============================================================
+ * 26. ORIENTAÇÃO PAISAGEM (AJUSTES RÁPIDOS)
+ * ============================================================ */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+    .bottom-nav {
+        height: 48px;
+    }
+    .bottom-nav-item {
+        flex-direction: row;
+        gap: var(--espaco-2);
+    }
+    .bottom-nav-item i {
+        font-size: 1rem;
+    }
+    .bottom-nav-item span {
+        font-size: 0.65rem;
+    }
+    .modal {
+        max-height: 95vh;
+    }
+}
+
+/* ============================================================
+ * 27. ACESSIBILIDADE (REDUCE MOTION)
+ * ============================================================ */
+@media screen and (max-width: 768px) and (prefers-reduced-motion: reduce) {
+    .sidebar-desktop,
+    .painel-mais-mobile,
+    .modal,
+    .dropdown-avatar,
+    .toast,
+    .loading-screen {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* ============================================================
+ * 28. HIGH CONTRAST / DARK MODE SUPORT (FUTURO)
+ * ============================================================ */
+@media screen and (max-width: 768px) and (prefers-color-scheme: dark) {
+    /* Placeholder para futuro dark mode */
+    /* Neste momento mantém o tema claro padrão */
+}

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Sol Nascente - Gestão Clínica Profissional</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="gestao_desktop.css">
+    <link rel="stylesheet" href="gestao_mobile.css">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/Logo/Logo Tipo do Consultório sem letra 2.png" type="image/x-icon">
+</head>
+<body>
+    <!-- ============================================================ -->
+    <!-- LOADING SCREEN -->
+    <!-- ============================================================ -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-logo">
+                <i class="fas fa-hand-holding-heart"></i>
+                <span>Sol Nascente</span>
+            </div>
+            <p class="loading-text">Carregando Sistema...</p>
+            <div class="loading-progress">
+                <div class="loading-progress-bar" id="loadingProgressBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- LOGIN CONTAINER -->
+    <!-- ============================================================ -->
+    <div id="loginContainer" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h1>Sol Nascente</h1>
+                </div>
+                <p class="login-subtitle">Gestão Clínica Profissional</p>
+            </div>
+            
+            <div class="login-body">
+                <form id="loginForm" class="login-form">
+                    <div class="input-group">
+                        <div class="input-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" id="loginUsername" placeholder="Nome de Utilizador" autocomplete="off" required>
+                            <label>Nome de Utilizador</label>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <div class="input-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="input-field">
+                            <input type="password" id="loginPassword" placeholder="Senha" required>
+                            <label>Senha</label>
+                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('loginPassword', this)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-login" id="loginBtn">
+                        <span class="btn-text">Entrar no Sistema</span>
+                        <i class="fas fa-arrow-right btn-icon"></i>
+                        <div class="btn-loader"></div>
+                    </button>
+                </form>
+                
+                <div id="loginMessage" class="login-message"></div>
+            </div>
+            
+            <div class="login-footer">
+                <div class="empresa-badges">
+                    <span class="badge-hospital"><i class="fas fa-hospital-user"></i> Consultório</span>
+                    <span class="badge-lab"><i class="fas fa-flask"></i> Laboratório</span>
+                </div>
+                <p class="empresa-nome">Consultório Médico e Laboratório de Análises Clínicas Sol Nascente</p>
+                <a href="index.html" class="login-link-gestao">
+                    <i class="fas fa-arrow-right-to-bracket"></i> Sistema de Venda
+                </a>
+                <p class="copyright">© 2026 - Todos os direitos reservados</p>
+            </div>
+        </div>
+        
+        <div class="login-bg-decor">
+            <div class="bg-circle bg-circle-1"></div>
+            <div class="bg-circle bg-circle-2"></div>
+            <div class="bg-circle bg-circle-3"></div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- APP PRINCIPAL -->
+    <!-- ============================================================ -->
+    <div id="appContainer" style="display: none;">
+        <!-- SIDEBAR DESKTOP -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <span>Sol Nascente</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-user">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-info-sidebar">
+                    <span class="user-name" id="sidebarUserName">Carregando...</span>
+                    <span class="user-role" id="sidebarUserRole"></span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" data-page="dashboard" class="nav-item active">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                    <span class="nav-badge"></span>
+                </a>
+                <a href="#" data-page="financeiro" class="nav-item">
+                    <i class="fas fa-coins"></i>
+                    <span>Controlo Financeiro</span>
+                </a>
+                <a href="#" data-page="servicos" class="nav-item">
+                    <i class="fas fa-stethoscope"></i>
+                    <span>Serviços Prestados</span>
+                </a>
+                <a href="#" data-page="saidas" class="nav-item">
+                    <i class="fas fa-arrow-right-from-bracket"></i>
+                    <span>Saídas Detalhadas</span>
+                </a>
+                <a href="#" data-page="estoque" class="nav-item">
+                    <i class="fas fa-boxes"></i>
+                    <span>Gestão de Estoque</span>
+                </a>
+                <a href="#" data-page="relatorios" class="nav-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Relatórios</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="btn-logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sair do Sistema</span>
+                </button>
+            </div>
+        </aside>
+        
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <!-- HEADER MOBILE -->
+            <header class="mobile-header">
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="mobile-logo">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <span>Sol Nascente</span>
+                </div>
+                <div class="mobile-user" id="mobileUserBtn">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </header>
+            
+            <!-- FILTERS BAR -->
+            <div class="filters-bar" id="filtersBar">
+                <div class="filters-header">
+                    <h3><i class="fas fa-filter"></i> Filtros</h3>
+                    <button class="btn-clear-filters" id="clearFiltersBtn">
+                        <i class="fas fa-undo-alt"></i> Limpar
+                    </button>
+                </div>
+                <div class="filters-body">
+                    <div class="filter-group">
+                        <label>Período</label>
+                        <select id="tipoFiltro" class="filter-select">
+                            <option value="mes_ano">Mês e Ano</option>
+                            <option value="ano">Ano</option>
+                            <option value="intervalo">Intervalo</option>
+                            <option value="hoje">Hoje</option>
+                            <option value="sem_filtro">Todos</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group filter-mes-ano" id="mesAnoGroup">
+                        <label>Mês</label>
+                        <select id="mesFiltro" class="filter-select">
+                            <option value="1">Janeiro</option><option value="2">Fevereiro</option>
+                            <option value="3">Março</option><option value="4">Abril</option>
+                            <option value="5">Maio</option><option value="6">Junho</option>
+                            <option value="7">Julho</option><option value="8">Agosto</option>
+                            <option value="9">Setembro</option><option value="10">Outubro</option>
+                            <option value="11">Novembro</option><option value="12">Dezembro</option>
+                        </select>
+                        <label>Ano</label>
+                        <input type="number" id="anoFiltro" class="filter-input" value="2026">
+                    </div>
+                    
+                    <div class="filter-group filter-ano" id="anoGroup" style="display:none">
+                        <label>Ano</label>
+                        <input type="number" id="anoOnlyFiltro" class="filter-input" value="2026">
+                    </div>
+                    
+                    <div class="filter-group filter-intervalo" id="intervaloGroup" style="display:none">
+                        <label>Data Início</label>
+                        <input type="date" id="dataInicioFiltro" class="filter-input">
+                        <label>Data Fim</label>
+                        <input type="date" id="dataFimFiltro" class="filter-input">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Instituição</label>
+                        <select id="instituicaoFiltro" class="filter-select">
+                            <option value="Todos">Todas</option>
+                            <option value="Consultório">Consultório</option>
+                            <option value="Laboratório">Laboratório</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn-apply-filters" id="applyFiltersBtn">
+                        <i class="fas fa-search"></i> Aplicar
+                    </button>
+                </div>
+            </div>
+            
+            <!-- PAGE CONTENT -->
+            <div id="pageContent" class="page-content">
+                <div class="skeleton-loader">
+                    <div class="skeleton-metrics">
+                        <div class="skeleton-card"></div>
+                        <div class="skeleton-card"></div>
+                        <div class="skeleton-card"></div>
+                        <div class="skeleton-card"></div>
+                    </div>
+                    <div class="skeleton-table">
+                        <div class="skeleton-header"></div>
+                        <div class="skeleton-row"></div>
+                        <div class="skeleton-row"></div>
+                        <div class="skeleton-row"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- BOTTOM NAVIGATION MOBILE -->
+            <nav class="bottom-nav" id="bottomNav">
+                <a href="#" data-page="dashboard" class="bottom-nav-item active">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" data-page="financeiro" class="bottom-nav-item">
+                    <i class="fas fa-coins"></i>
+                    <span>Financeiro</span>
+                </a>
+                <a href="#" data-page="servicos" class="bottom-nav-item">
+                    <i class="fas fa-stethoscope"></i>
+                    <span>Serviços</span>
+                </a>
+                <a href="#" data-page="estoque" class="bottom-nav-item">
+                    <i class="fas fa-boxes"></i>
+                    <span>Estoque</span>
+                </a>
+                <a href="#" data-page="mais" class="bottom-nav-item" id="moreMenuBtn">
+                    <i class="fas fa-ellipsis-h"></i>
+                    <span>Mais</span>
+                </a>
+            </nav>
+        </main>
+    </div>
+    
+    <!-- MODAL CONTAINER -->
+    <div id="modalContainer" class="modal-container" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle"></h3>
+                <button class="modal-close" onclick="window.fecharModal && window.fecharModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer" id="modalFooter"></div>
+        </div>
+    </div>
+    
+    <!-- TOAST CONTAINER -->
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <!-- MOBILE MENU SHEET -->
+    <div class="mobile-menu-sheet" id="mobileMenuSheet">
+        <div class="mobile-menu-header">
+            <div class="mobile-menu-user">
+                <i class="fas fa-user-circle"></i>
+                <div>
+                    <div class="mobile-user-name" id="mobileUserName">Carregando...</div>
+                    <div class="mobile-user-role" id="mobileUserRole"></div>
+                </div>
+            </div>
+            <button class="mobile-menu-close" id="mobileMenuClose">&times;</button>
+        </div>
+        <nav class="mobile-menu-nav">
+            <a href="#" data-page="dashboard" class="mobile-nav-item">
+                <i class="fas fa-chart-line"></i><span>Dashboard</span>
+            </a>
+            <a href="#" data-page="financeiro" class="mobile-nav-item">
+                <i class="fas fa-coins"></i><span>Controlo Financeiro</span>
+            </a>
+            <a href="#" data-page="servicos" class="mobile-nav-item">
+                <i class="fas fa-stethoscope"></i><span>Serviços Prestados</span>
+            </a>
+            <a href="#" data-page="saidas" class="mobile-nav-item">
+                <i class="fas fa-arrow-right-from-bracket"></i><span>Saídas Detalhadas</span>
+            </a>
+            <a href="#" data-page="estoque" class="mobile-nav-item">
+                <i class="fas fa-boxes"></i><span>Gestão de Estoque</span>
+            </a>
+            <a href="#" data-page="relatorios" class="mobile-nav-item">
+                <i class="fas fa-file-alt"></i><span>Relatórios</span>
+            </a>
+        </nav>
+        <div class="mobile-menu-footer">
+            <button class="btn-logout-mobile" id="logoutMobileBtn">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </button>
+        </div>
+    </div>
+    
+    <!-- JAVASCRIPT PRINCIPAL -->
+    <script src="gestao.js"></script>
+    <script src="gestao_ui.js"></script>
+</body>
+</html>

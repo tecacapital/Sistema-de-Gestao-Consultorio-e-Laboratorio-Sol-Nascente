@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Sol Nascente - Sistema Clínico</title>
+    <link rel="shortcut icon" href="Logo/Logo Tipo do Consultório sem letra 2.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mobile.css">
+</head>
+<body>
+    <div id="app-root">
+        <!-- OVERLAY DE LOADING -->
+        <div id="overlay-loading" class="oculto">
+            <div class="spinner-container">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <span>A processar...</span>
+            </div>
+        </div>
+
+        <!-- CONTAINER DE NOTIFICACOES TOAST -->
+        <div id="container-notificacoes"></div>
+
+        <!-- SECCAO LOGIN -->
+        <section id="secao-login">
+            <div class="login-wrapper">
+                <div class="login-card">
+                    <div class="login-logo-container">
+                        <img id="logo-login" src="" alt="Sol Nascente" class="login-logo-img" style="display:none;">
+                        <span id="logo-login-fallback" class="login-logo-texto">Sol Nascente</span>
+                    </div>
+                    <h2 class="login-titulo">
+                        <i class="fa-solid fa-hospital"></i> Acesso ao Sistema
+                    </h2>
+                    <form id="form-login" autocomplete="off" novalidate>
+                        <div class="input-grupo">
+                            <label for="input-username" class="input-label">Username</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-user input-icon"></i>
+                                <input type="text" id="input-username" class="input-campo" placeholder="Username" autocomplete="username" required>
+                            </div>
+                        </div>
+                        <div class="input-grupo">
+                            <label for="input-senha" class="input-label">Senha</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-lock input-icon"></i>
+                                <input type="password" id="input-senha" class="input-campo" placeholder="Senha" autocomplete="current-password" required>
+                                <button type="button" id="btn-toggle-senha" class="btn-toggle-senha" aria-label="Mostrar senha">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="msg-erro-login" class="msg-erro-login oculto">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <span id="texto-erro-login"></span>
+                        </div>
+                        <button type="submit" id="btn-login" class="btn btn-primario btn-login">
+                            <i class="fa-solid fa-right-to-bracket"></i> Entrar no Sistema
+                        </button>
+                    </form>
+                    <div class="login-rodape">
+                        <span>Consultório Médico e Laboratório de Análises Clínicas</span>
+                        <span>Uige - Angola</span>
+                        <a href="gestao.html" class="login-link-gestao">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> Sistema de Gestão</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCAO PAINEL PRINCIPAL -->
+        <section id="secao-painel" class="oculto">
+            <!-- HEADER FIXO -->
+            <header id="header-principal">
+                <div class="header-esquerda">
+                    <img id="logo-header-img" src="" alt="Sol Nascente" style="display:none;">
+                    <span id="nome-sistema" class="header-nome-sistema">Sol Nascente</span>
+                </div>
+                <div class="header-direita">
+                    <div id="avatar-funcionario" class="avatar-circulo" tabindex="0" role="button" aria-label="Menu do utilizador">
+                        <span id="iniciais-funcionario">--</span>
+                    </div>
+                    <div id="dropdown-avatar" class="dropdown-avatar oculto">
+                        <div class="dropdown-info">
+                            <p id="dropdown-nome" class="dropdown-nome-func"></p>
+                            <p id="dropdown-funcao" class="dropdown-funcao-func"></p>
+                        </div>
+                        <button id="btn-logout" class="btn-logout-dropdown">
+                            <i class="fa-solid fa-right-from-bracket"></i> Sair
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="painel-layout">
+                <!-- SIDEBAR DESKTOP -->
+                <nav id="sidebar" class="sidebar-desktop">
+                    <ul class="sidebar-lista">
+                        <li class="sidebar-item" data-vista="inicio">
+                            <i class="fa-solid fa-house"></i><span>Inicio</span>
+                        </li>
+                        <li class="sidebar-item" data-vista="novo-atendimento">
+                            <i class="fa-solid fa-user-plus"></i><span>Novo Atendimento</span>
+                        </li>
+                        <li class="sidebar-item" data-vista="pacientes">
+                            <i class="fa-solid fa-users"></i><span>Pacientes</span>
+                        </li>
+                        <li class="sidebar-item" data-vista="pendentes">
+                            <i class="fa-solid fa-clock"></i><span>Pendentes</span>
+                            <span id="badge-pendentes" class="badge-pendentes oculto">0</span>
+                        </li>
+                        <li class="sidebar-item restrito" data-vista="funcionarios" data-permissao="Administrador,Gestor">
+                            <i class="fa-solid fa-user-tie"></i><span>Funcionarios</span>
+                        </li>
+                        <li class="sidebar-item restrito" data-vista="configuracoes" data-permissao="Administrador,Gestor">
+                            <i class="fa-solid fa-gear"></i><span>Configuracoes</span>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- AREA DE CONTEUDO DINAMICO -->
+                <main id="area-conteudo" class="area-conteudo"></main>
+            </div>
+
+            <!-- BOTTOM NAVIGATION MOBILE -->
+            <nav id="bottom-nav" class="bottom-nav">
+                <button class="bottom-nav-item" data-vista="inicio">
+                    <i class="fa-solid fa-house"></i><span>Inicio</span>
+                </button>
+                <button class="bottom-nav-item" data-vista="novo-atendimento">
+                    <i class="fa-solid fa-user-plus"></i><span>Atender</span>
+                </button>
+                <button class="bottom-nav-item" data-vista="pacientes">
+                    <i class="fa-solid fa-users"></i><span>Pacientes</span>
+                </button>
+                <button class="bottom-nav-item" data-vista="pendentes">
+                    <i class="fa-solid fa-clock"></i><span>Pendentes</span>
+                </button>
+                <button class="bottom-nav-item" id="btn-mais-mobile">
+                    <i class="fa-solid fa-bars"></i><span>Mais</span>
+                </button>
+            </nav>
+
+            <!-- PAINEL MAIS MOBILE -->
+            <div id="painel-mais-mobile" class="painel-mais-mobile oculto">
+                <div class="painel-mais-header">
+                    <span>Mais Opcoes</span>
+                    <button id="btn-fechar-mais-mobile" class="btn-fechar-painel" aria-label="Fechar">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                </div>
+                <div class="painel-mais-lista">
+                    <button class="painel-mais-item restrito" data-vista="funcionarios" data-permissao="Administrador,Gestor">
+                        <i class="fa-solid fa-user-tie"></i> Funcionarios
+                    </button>
+                    <button class="painel-mais-item restrito" data-vista="configuracoes" data-permissao="Administrador,Gestor">
+                        <i class="fa-solid fa-gear"></i> Configuracoes
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODAL OVERLAY -->
+        <div id="modal-overlay" class="modal-overlay oculto">
+            <div id="modal-container" class="modal-container"></div>
+        </div>
+
+        <!-- MODAL DE CONFIRMACAO -->
+        <div id="modal-confirmacao-overlay" class="modal-overlay oculto">
+            <div class="modal-confirmacao-card">
+                <div class="modal-confirmacao-header">
+                    <i class="fa-solid fa-circle-question"></i>
+                    <span>Confirmacao</span>
+                </div>
+                <p id="modal-confirmacao-mensagem"></p>
+                <div class="modal-confirmacao-acoes">
+                    <button id="btn-confirmacao-cancelar" class="btn btn-secundario">Cancelar</button>
+                    <button id="btn-confirmacao-confirmar" class="btn btn-primario">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
